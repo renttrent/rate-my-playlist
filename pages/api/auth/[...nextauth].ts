@@ -38,7 +38,7 @@ export default NextAuth({
   ],
   secret: process.env.JWT,
   pages: {
-    signIn: '/login'
+    signIn: '/welcome'
   },
   callbacks: {
     //@ts-ignore
@@ -71,6 +71,9 @@ export default NextAuth({
       session.user.username = token.username
 
       return session
+    },
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/welcome'
     }
   }
 })

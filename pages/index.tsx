@@ -1,34 +1,62 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import SpotifyWebApi from "spotify-web-api-js"
-import { useEffect } from 'react'
-import { Box, Button } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { Box, Flex, Text } from '@chakra-ui/react'
+import { getProviders, SessionProviderProps, useSession } from "next-auth/react"
+import useSpotify from '../hooks/useSpotify'
+import { Navbar } from '../components/Navbar'
 
-let spotifyApi = new SpotifyWebApi()
+interface User {
+  accessToken: string,
+  email: string,
+  image: string,
+  name: string,
+  refreshToken: string,
+  username: string
+}
 
-const Home: NextPage = () => {
-  
-  
+const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
+  const {data: session, status } = useSession()
+  const user = session?.user
+  const [playlists, setPlaylists] = useState([])
+  const spotifyApi = useSpotify()
+
   useEffect(() => {
-    const result = async () => {
-      const f = await fetch("https://accounts.spotify.com/api/token", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': `Basic ${process.env.SPOTIFY_CLIENT}:${process.env.SPOTIFY_SECRET}`
-        },
-        body: "grant_type=client_credentials"
+    if(spotifyApi.getAccessToken()) {
+      spotifyApi.getUserPlaylists().then((data: any) => {
+        setPlaylists(data.body.items)
       })
-      return await f.json()
     }
-    result().then(res => console.log(res))
-    // spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE").then(res => console.log(res))
-  }, [])
+  }, [session, spotifyApi])
+  
+  
   return (
-    <Button>Log In</Button>
+    <div>
+      <Head>
+        <title>Rate My Playlist</title>
+      </Head>
+      <Navbar />
+      <Flex direction="column">
+        <Text>{user?.name}</Text>
+        {user?.image && 
+        <Box>
+          <Image src={user.image} alt="profilepic" width="200px" height="200px"/>
+        </Box>
+        }
+      </Flex>
+    </div>
   )
 }
 
 export default Home
+
+export async function getServerSideProps() {
+  const providers = await getProviders()
+  
+  return {
+    props: {
+      providers
+    }
+  }
+}

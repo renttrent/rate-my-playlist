@@ -1,20 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { Box, Flex, Text } from '@chakra-ui/react'
+import { Box, Flex, Text, VStack, Image } from '@chakra-ui/react'
 import { getProviders, SessionProviderProps, useSession } from "next-auth/react"
 import useSpotify from '../hooks/useSpotify'
 import { Navbar } from '../components/Navbar'
-
-interface User {
-  accessToken: string,
-  email: string,
-  image: string,
-  name: string,
-  refreshToken: string,
-  username: string
-}
+import { Playlist } from '../types/general'
 
 const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
   const {data: session, status } = useSession()
@@ -30,20 +21,29 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
     }
   }, [session, spotifyApi])
   
-  
+  console.log(playlists[0])
   return (
     <div>
       <Head>
         <title>Rate My Playlist</title>
       </Head>
-      <Navbar />
-      <Flex direction="column">
-        <Text>{user?.name}</Text>
-        {user?.image && 
-        <Box>
-          <Image src={user.image} alt="profilepic" width="200px" height="200px"/>
-        </Box>
-        }
+      {/* @ts-ignore */}
+      <Navbar user={user} />
+      <Flex direction="column" p="2" width="50%" margin="auto">
+        {playlists.map((playlist: Playlist) => (
+          <Box
+            p="2"
+            boxShadow="lg"
+            bg="gray.900"
+            _hover={{ bg: "green.900"}}
+            m="2"
+          >
+            {/* @ts-ignore */}
+            <Image src={playlist.images[0].url} boxSize="20"/>
+            <Text>{playlist.name}</Text>
+            <Text>{playlist.description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")}</Text>
+          </Box>
+        ))}
       </Flex>
     </div>
   )

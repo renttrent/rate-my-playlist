@@ -37,6 +37,7 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
             bg="gray.900"
             _hover={{ bg: "green.900"}}
             m="2"
+            key={playlist.id}
           >
             {/* @ts-ignore */}
             <Image src={playlist.images[0].url} boxSize="20"/>

@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { NextPage } from "next";
 import { getProviders, SessionProviderProps, useSession } from "next-auth/react";
 import Router from "next/router";
@@ -15,7 +16,7 @@ const Welcome: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
 
   return (
     <>
-      Welcome
+      <Box>Welcome</Box>
       <LogInButton providers={providers} />
     </>
   )
@@ -23,7 +24,7 @@ const Welcome: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
 
 export default Welcome
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const providers = await getProviders()
   
   return {

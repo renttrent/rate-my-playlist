@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
-import { NextPage } from "next";
-import { getProviders, SessionProviderProps, useSession } from "next-auth/react";
+import { GetServerSideProps, NextPage } from "next";
+import { getProviders, SessionProviderProps, signIn, useSession } from "next-auth/react";
 import Router from "next/router";
 import { useEffect } from "react";
 import { LogInButton } from "../../components/LogInButton";
 
 const Welcome: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
   const { data: session } = useSession()
-
+  const spotifyprovider = Object.values(providers).at(0)
   useEffect(() => {
     if(session) {
       Router.push("/")
@@ -17,14 +17,14 @@ const Welcome: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
   return (
     <>
       <Box>Welcome</Box>
-      <LogInButton providers={providers} />
+      <LogInButton  signIn={signIn} providerId={spotifyprovider.id} providerCallback={spotifyprovider.callbackUrl}/>
     </>
   )
 }
 
 export default Welcome
 
-export async function getStaticProps() {
+export const getServerSideProps: GetServerSideProps = async() => {
   const providers = await getProviders()
   
   return {

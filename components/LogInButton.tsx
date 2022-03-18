@@ -1,14 +1,11 @@
 import { Button } from "@chakra-ui/react"
-import { SessionProviderProps, signIn } from "next-auth/react"
 
-export const LogInButton: React.FC<{providers: SessionProviderProps}> = ({providers}) => {
-  const provider = Object.values(providers).at(0)
-  console.log(provider.callbackUrl)
+export const LogInButton: React.FC<{signIn: Function, providerId: string, providerCallback: string}> = ({signIn, providerId, providerCallback}) => {
   return (
     <Button bg="green.300" _hover={{ bg: "green.500" }}
-      onClick={() => signIn(provider.id, { callbackUrl: provider.callbackUrl })}
+      onClick={() => signIn(providerId, { callbackUrl: providerCallback})}
     >
-      Login with {provider.name}
+      Login with Spotify
     </Button>
   )
 }

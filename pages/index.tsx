@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { Box, Flex, Text, VStack, Image } from '@chakra-ui/react'
@@ -57,7 +57,7 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
 
 export default Home
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps  = async () => {
   const providers = await getProviders()
   
   return {

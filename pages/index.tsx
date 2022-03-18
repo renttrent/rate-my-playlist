@@ -6,14 +6,20 @@ import { getProviders, SessionProviderProps, useSession } from "next-auth/react"
 import useSpotify from '../hooks/useSpotify'
 import { Navbar } from '../components/Navbar'
 import { Playlist } from '../types/general'
+import Router from 'next/router'
 
 const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
   const {data: session, status } = useSession()
+ 
   const user = session?.user
   const [playlists, setPlaylists] = useState([])
   const spotifyApi = useSpotify()
 
   useEffect(() => {
+    if(status === "unauthenticated") {
+      Router.push("/welcome")
+    }
+
     if(spotifyApi.getAccessToken()) {
       spotifyApi.getUserPlaylists().then((data: any) => {
         setPlaylists(data.body.items)
@@ -21,7 +27,6 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
     }
   }, [session, spotifyApi])
   
-  console.log(playlists[0])
   return (
     <div>
       <Head>

@@ -7,6 +7,11 @@ export interface User {
   username: string
 }
 
+export interface SpotifySession {
+  expires_at: string,
+  user: User
+}
+
 export interface Playlist {
   collaborative: boolean,
   description: string,

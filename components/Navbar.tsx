@@ -1,12 +1,15 @@
 import { Box, Button, Flex, HStack, Image, Text } from "@chakra-ui/react"
+import { Session } from "next-auth"
 import { signOut, useSession } from "next-auth/react"
+import { SpotifySession } from "../types/general"
 
 const Avatar: React.FC = () => {
 
-  const { data: session, status } = useSession()
+  // @ts-ignore
+  const { data: session }: { data: SpotifySession } = useSession()
 
   return (
-    <HStack rounded="3xl" bg="blackAlpha.700" p="2" cursor="pointer" onClick={() => window.location.href = "https://open.spotify.com/user/hosstern"}>
+    <HStack rounded="3xl" bg="blackAlpha.700" p="2" cursor="pointer" onClick={() => window.location.href = `https://open.spotify.com/user/${session.user.username}`}>
       <Box boxSize="14" p="1">
         {/* @ts-ignore */}
         <Image src={session?.user?.image} rounded="full" />

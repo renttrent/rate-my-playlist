@@ -6,11 +6,11 @@ import theme from '../styles/theme'
 function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
 
   return (
-    <ChakraProvider theme={theme}>
-      <SessionProvider session={session}>
+    <SessionProvider session={session}>
+      <ChakraProvider theme={theme}>
         <Component {...pageProps} />
-      </SessionProvider>
-    </ChakraProvider>
+      </ChakraProvider>
+    </SessionProvider>
   )
 }
 

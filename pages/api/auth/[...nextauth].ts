@@ -38,7 +38,7 @@ export default NextAuth({
   ],
   secret: process.env.JWT,
   pages: {
-    signIn: '/welcome'
+    signIn: '/login'
   },
   callbacks: {
     //@ts-ignore

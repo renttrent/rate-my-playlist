@@ -45,7 +45,7 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
             key={playlist.id}
           >
             {/* @ts-ignore */}
-            <Image src={playlist.images[0].url} boxSize="20"/>
+            <Image src={playlist.images[0].url} boxSize="28" objectFit="cover"/>
             <Text>{playlist.name}</Text>
             <Text>{playlist.description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")}</Text>
           </Box>

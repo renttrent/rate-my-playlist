@@ -1,5 +1,6 @@
 //@ts-ignore
 import SpotifyWebApi from "spotify-web-api-node"
+import { Playlist } from "../types/general"
 import { client_id, client_secret } from "./useful"
 
 

@@ -31,15 +31,13 @@ const refreshAccessToken = async (token: any) => {
 export default NextAuth({
   providers: [
     SpotifyProvider({
-      clientId: client_id ? client_id : "",
-      clientSecret: client_secret ? client_secret : "",
+      //@ts-ignore
+      clientId: client_id,
+      //@ts-ignore
+      clientSecret: client_secret,
       authorization: LOGIN_URL
     }),
   ],
-  secret: process.env.JWT,
-  pages: {
-    signIn: '/login'
-  },
   callbacks: {
     //@ts-ignore
     async jwt({ token, account, user }) {

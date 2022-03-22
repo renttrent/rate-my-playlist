@@ -12,6 +12,26 @@ export interface SpotifySession {
   user: User
 }
 
+export interface User {
+  display_name: string,
+  external_urls: {
+    spotify: string
+  },
+  href: string,
+  id: string,
+  type: string,
+  uri: string
+  followers: {
+    href: string | null,
+    total: number
+  },
+  images: Array<{
+    height: number | null,
+    width: number | null,
+    url: string 
+  }>
+}
+
 export interface Playlist {
   collaborative: boolean,
   description: string,
@@ -44,5 +64,9 @@ export interface Playlist {
     total: number
   },
   type: string,
-  uri: string
+  uri: string,
+  followers: {
+    href: string | null,
+    total: number
+  }
 }

@@ -16,7 +16,8 @@ const Welcome: NextPage<{
   
 }) => {
   const { data: session } = useSession()
-  const spotifyprovider = Object.values(providers).at(0)
+  //@ts-ignore
+  const spotifyprovider = providers.spotify
   useEffect(() => {
     if(session) {
       Router.push("/")

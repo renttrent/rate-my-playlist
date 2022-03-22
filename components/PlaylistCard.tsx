@@ -1,5 +1,6 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react"
 import Link from "next/link"
+import { parseDescription } from "../lib/useful"
 import { Playlist } from "../types/general"
 
 export const PlaylistCard: React.FC<{playlist: Playlist}> = ({ playlist }) => {
@@ -22,7 +23,7 @@ export const PlaylistCard: React.FC<{playlist: Playlist}> = ({ playlist }) => {
         <Image src={playlist.images[0].url} boxSize="28" objectFit="cover"/>
         <Box ml="10">
         <Text fontSize="2xl" fontWeight="bold">{playlist.name}</Text>
-        <Text>{playlist.description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")}</Text>
+        <Text>{parseDescription(playlist.description)}</Text>
         </Box>
         <Box position="absolute" right="5">
           Rating:

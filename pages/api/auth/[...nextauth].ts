@@ -36,9 +36,9 @@ export default NextAuth({
       //@ts-ignore
       clientSecret: client_secret,
       authorization: LOGIN_URL,
-      secret: process.env.JWT
     }),
   ],
+  secret: process.env.SECRET,
   callbacks: {
     //@ts-ignore
     async jwt({ token, account, user }) {

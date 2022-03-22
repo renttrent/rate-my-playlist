@@ -24,3 +24,7 @@ export const getAccessToken = async () => {
   console.log(response.json())
   return response.json();
 };
+
+export const parseDescription = (description: string) => {
+  return description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")
+}

@@ -8,6 +8,8 @@ import { Playlist, User } from "../../types/general";
 import { FaArrowLeft } from "react-icons/fa"
 import { Navbar } from "../../components/Navbar";
 import { useSession } from "next-auth/react";
+import { parseDescription } from "../../lib/useful";
+
 const Playlist: NextPage<{}> = () => {
   const router = useRouter()
   const {data: session, status} = useSession()
@@ -42,7 +44,7 @@ const Playlist: NextPage<{}> = () => {
         <Image src={playlist?.images[0].url} boxSize="32" objectFit="cover"/>
         <Box>
           <Text fontSize="4xl">{playlist?.name}</Text>
-          <Text fontSize="2xl">{playlist?.description}</Text>
+          <Text fontSize="2xl">{parseDescription(playlist.description)}</Text>
           <Text>Followers: {playlist?.followers.total}</Text>
         </Box>
         <VStack>
@@ -56,7 +58,7 @@ const Playlist: NextPage<{}> = () => {
       <Divider mt="2" mb="2"/>
       <HStack p="2">
         <Text fontSize="xl">Rate this playlist</Text>
-        <Slider aria-label="rating-slider" width="50%" min={0} max={10} step={0.5} defaultValue={5}>
+        <Slider aria-label="rating-slider" width="50%" min={0} max={10} step={1} defaultValue={5}>
           <SliderTrack>
             <SliderFilledTrack />
           </SliderTrack>

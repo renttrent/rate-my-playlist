@@ -8,8 +8,24 @@ import { Navbar } from '../components/Navbar'
 import { Playlist } from '../types/general'
 import Router from 'next/router'
 import { PlaylistCard } from '../components/PlaylistCard'
+import { createClient } from '@supabase/supabase-js'
 
-const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
+const getUsers = async (supabaseUrl: string, supabaseKey: string) => {
+  // @ts-ignore
+  const supabase = createClient(supabaseUrl, supabaseKey)
+  const { data: users, error } = await supabase.from("User").select("*")
+  return { users, error }
+}
+
+const Home: NextPage<{
+  providers: SessionProviderProps,
+  supabaseUrl: string,
+  supabaseKey: string
+}> = ({
+  providers,
+  supabaseUrl,
+  supabaseKey
+}) => {
   const {data: session, status } = useSession()
  
   const user = session?.user
@@ -17,6 +33,7 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
   const spotifyApi = useSpotify()
 
   useEffect(() => {
+    getUsers(supabaseUrl, supabaseKey).then((data) => console.log(data.users))
     if(!session) {
       Router.push("/welcome")
     }
@@ -26,6 +43,8 @@ const Home: NextPage<{providers: SessionProviderProps}> = ({providers}) => {
         setPlaylists(data.body.items)
       })
     }
+
+    return () => (console.log("done"))
   }, [session, spotifyApi])
 
   return (
@@ -50,7 +69,9 @@ export const getServerSideProps: GetServerSideProps  = async () => {
   const providers = await getProviders()
   return {
     props: {
-      providers
+      providers,
+      supabaseUrl: process.env.SUPABASE_URL || "",
+      supabaseKey: process.env.SUPABASE_KEY || ""
     }
   }
 }

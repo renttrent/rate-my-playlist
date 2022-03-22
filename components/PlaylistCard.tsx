@@ -25,7 +25,7 @@ export const PlaylistCard: React.FC<{playlist: Playlist}> = ({ playlist }) => {
         <Text>{playlist.description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")}</Text>
         </Box>
         <Box position="absolute" right="5">
-          Rating
+          Rating:
         </Box>
       </Flex>
     </Link>

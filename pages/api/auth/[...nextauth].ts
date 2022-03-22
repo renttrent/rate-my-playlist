@@ -35,7 +35,8 @@ export default NextAuth({
       clientId: client_id,
       //@ts-ignore
       clientSecret: client_secret,
-      authorization: LOGIN_URL
+      authorization: LOGIN_URL,
+      secret: process.env.JWT
     }),
   ],
   callbacks: {

@@ -10,10 +10,15 @@ import Router from 'next/router'
 import { PlaylistCard } from '../components/PlaylistCard'
 import { createClient } from '@supabase/supabase-js'
 
-const getUsers = async (supabaseUrl: string, supabaseKey: string) => {
+const getUsers = async (supabaseUrl: string, supabaseKey: string, user: any) => {
   // @ts-ignore
   const supabase = createClient(supabaseUrl, supabaseKey)
-  const { data: users, error } = await supabase.from("User").select("*")
+  let { data: users, error } = await supabase.from("User").select(user.email)
+  if (error?.message === "42703") {
+    const { data, error } = await supabase.from("User").insert({ email: user.email, image: user.image, username: user.username, name: user.name })
+    users = data
+    console.log(error)
+  }
   return { users, error }
 }
 
@@ -31,9 +36,9 @@ const Home: NextPage<{
   const user = session?.user
   const [playlists, setPlaylists] = useState([])
   const spotifyApi = useSpotify()
-
   useEffect(() => {
-    getUsers(supabaseUrl, supabaseKey).then((data) => console.log(data.users))
+    if(user)
+      getUsers(supabaseUrl, supabaseKey, user).then((data) => console.log(data.users))
     if(!session) {
       Router.push("/welcome")
     }

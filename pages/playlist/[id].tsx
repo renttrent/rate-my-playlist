@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa"
 import { Navbar } from "../../components/Navbar";
 import { useSession } from "next-auth/react";
 import { parseDescription } from "../../lib/useful";
-
+import { MdStar, MdStarBorder } from "react-icons/md"
 const Playlist: NextPage<{}> = () => {
   const router = useRouter()
   const {data: session, status} = useSession()
@@ -26,12 +26,17 @@ const Playlist: NextPage<{}> = () => {
 
   if(!playlist)
     return (
-      <Stack margin="auto">
-        <Skeleton height="20px" width="2xl"></Skeleton>
-        <Skeleton height="20px" width="2xl"></Skeleton>
-        <Skeleton height="20px" width="2xl"></Skeleton>
-        <Skeleton height="32" width="2xl"></Skeleton>
+      <Box margin="auto" width="container.md" p="3" mt="2">
+      <Link href="/"><HStack m="2" color="spotify.400" fontSize="lg" fontWeight="semibold" cursor="pointer" _hover={{ color: "spotify.100" }}> <FaArrowLeft /> <Text>Go home</Text> </HStack></Link>
+      <Stack >
+        <HStack width="100%">
+          <Skeleton height="7rem" width="30%"></Skeleton>
+          <Skeleton height="7rem" width="70%"></Skeleton>
+        </HStack>
+        <Skeleton height="2rem" width="100%"></Skeleton>
+        <Skeleton height="md" width="100%"></Skeleton>
       </Stack>
+      </Box>
     )
 
   return (
@@ -58,14 +63,17 @@ const Playlist: NextPage<{}> = () => {
       <Divider mt="2" mb="2"/>
       <HStack p="2">
         <Text fontSize="xl">Rate this playlist</Text>
-        <Slider aria-label="rating-slider" width="50%" min={0} max={10} step={1} defaultValue={5}>
+        {/* <Slider aria-label="rating-slider" width="50%" min={0} max={10} step={1} defaultValue={5}>
           <SliderTrack>
             <SliderFilledTrack />
           </SliderTrack>
           <SliderThumb />
-        </Slider>
+        </Slider> */}
+        <MdStar />
       </HStack>
+      <Box p="3" rounded="md" bg="spotify.400" m="2">
       <iframe src={`https://open.spotify.com/embed/playlist/${playlist.id}`} width="100%" height="400px" frameBorder="0" allow="encrypted-media"></iframe>
+      </Box>
     </Box>
     </>
   )

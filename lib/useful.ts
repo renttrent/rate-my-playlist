@@ -28,3 +28,19 @@ export const getAccessToken = async () => {
 export const parseDescription = (description: string) => {
   return description.replace(new RegExp("&"+"#"+"x27;", "g"), "'")
 }
+
+export const parseRating = (rating: string): Array<number> => {
+  return rating.split(',').map((nr) => parseInt(nr))
+}
+
+export const getRating = (rating: string | Array<number>) => {
+  if(typeof rating === "string") {
+    rating = parseRating(rating)
+  }
+
+  const allRatings = rating.map((nr, idx) => nr*idx)
+  const sumRatings = allRatings.reduce((oldValue, newValue) => oldValue + newValue)
+  const totalVoters = rating.reduce((oldValue, newValue) => oldValue + newValue)
+
+  return sumRatings / totalVoters
+}
